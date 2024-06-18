@@ -8,18 +8,6 @@ const mqtt = require("mqtt");
 
 let client = null;
 
-if (client == null) {
-  client = mqtt.connect("wss://test.mosquitto.org:8081");
-  client.on("connect", () => {
-    console.log("Connected to MQTT broker.");
-    client.subscribe("animalize/server");
-    client.on("message", (topic, message) => {
-      console.log(message.toString());
-      client.publish("animalize/client", "Hello from server.");
-    });
-  });
-}
-
 app.use(
   cors({
     origin: "*",
@@ -39,4 +27,15 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  if (client == null) {
+    client = mqtt.connect("wss://test.mosquitto.org:8081");
+    client.on("connect", () => {
+      console.log("Connected to MQTT broker.");
+      client.subscribe("animalize/ss");
+      client.on("message", (topic, message) => {
+        console.log(message.toString());
+        client.publish("animalize/client", "Hello from server.");
+      });
+    });
+  }
 });
