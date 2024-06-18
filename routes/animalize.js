@@ -51,7 +51,7 @@ app.get("/report", async (req, res) => {
 
   if (redirect === "true") return res.redirect(diskLocation);
   res.json({
-    status: "success",
+    success: true,
     message: "PDF generated successfully.",
     data: {
       url: diskLocation,
@@ -100,7 +100,7 @@ app.get("/invoice", async (req, res) => {
 
   if (redirect === "true") return res.redirect(diskLocation);
   res.json({
-    status: "success",
+    success: true,
     message: "PDF generated successfully.",
     data: {
       url: diskLocation,
