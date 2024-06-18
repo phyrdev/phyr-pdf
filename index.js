@@ -6,8 +6,10 @@ const animalize = require("./routes/animalize");
 const cors = require("cors");
 const mqtt = require("mqtt");
 
-try {
-  const client = mqtt.connect("wss://test.mosquitto.org:8081");
+let client = null;
+
+if (client == null) {
+  client = mqtt.connect("wss://test.mosquitto.org:8081");
   client.on("connect", () => {
     console.log("Connected to MQTT broker.");
     client.subscribe("animalize/server");
@@ -16,8 +18,6 @@ try {
       client.publish("animalize/client", "Hello from server.");
     });
   });
-} catch (error) {
-  console.log("Error connecting to MQTT broker.");
 }
 
 app.use(
