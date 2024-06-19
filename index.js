@@ -4,9 +4,6 @@ const path = require("path");
 const port = process.env.PORT || 3001;
 const animalize = require("./routes/animalize");
 const cors = require("cors");
-const mqtt = require("mqtt");
-
-let client = null;
 
 app.use(
   cors({
@@ -25,17 +22,6 @@ app.get("/", (req, res) => {
   res.send("Server is running.");
 });
 
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`Server is running on port ${port}`);
-  if (client == null) {
-    client = mqtt.connect("wss://test.mosquitto.org:8081");
-    client.on("connect", () => {
-      console.log("Connected to MQTT broker.");
-      client.subscribe("animalize/ss");
-      client.on("message", (topic, message) => {
-        console.log(message.toString());
-        client.publish("animalize/client", "Hello from server.");
-      });
-    });
-  }
 });
